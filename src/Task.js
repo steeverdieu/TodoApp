@@ -5,7 +5,7 @@
  * @param  {[type]} description The description of the ask
  * @return {void}
  */
-var Task = funtion(label, description) {
+var Task = function(label, description) {
   this.label = label;
   this.description = description;
   this.completed = false;
@@ -16,7 +16,7 @@ var Task = funtion(label, description) {
  * 
  * @return {Task} The current task
  */
-Task.prototype.markAsComplete(){
+Task.prototype.markAsComplete = function(){
   this.completed = true;
   return this;
 }
@@ -26,7 +26,7 @@ Task.prototype.markAsComplete(){
  * 
  * @return {Task} The current task
  */
-Task.prototype.markAsUncomplete(){
+Task.prototype.markAsUncomplete = function(){
   this.completed = false;
   return this;
 }

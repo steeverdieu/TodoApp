@@ -7,7 +7,7 @@ var TasksGroup = function() {
  * 
  * @param {Task} task The task to add
  */
-TasksGroup.prototype.addTask(task){
+TasksGroup.prototype.addTask = function(task){
   this.tasks.push(task);
 }
 
@@ -17,7 +17,7 @@ TasksGroup.prototype.addTask(task){
  * @param  {Task} task The task to delete
  * @return {void} 
  */
-TasksGroup.prototype.deleteTask(task){
+TasksGroup.prototype.deleteTask = function(task){
   this.tasks.splice(this.tasks.indexOf(task), 1);
 }
 
@@ -27,8 +27,17 @@ TasksGroup.prototype.deleteTask(task){
  * @param  {Task} task The task to mark
  * @return {void}
  */
-tasks.prototype.markAsComplete(task){
+TasksGroup.prototype.markAsComplete = function(task){
   this.task.completed();
+}
+
+/**
+ * Get the list of tasks of the current tasks group
+ * 
+ * @return {array} The list of tasks
+ */
+TasksGroup.prototype.getTasks = function(){
+	return this.tasks;
 }
 
 

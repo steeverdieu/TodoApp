@@ -41,7 +41,7 @@ var App = (function(){
 	 * @return {void}
 	 */
 	deleteTasksGroup: function(tasksGroup){
-	  this.tasksGroups.splice(this.tasksGroups.indexOf(tasksGroup), 1);
+	  this.tasksGroups.splice(this.getPositionOfTasksGroup(tasksGroup), 1);
 	},
 
 	/**
@@ -51,6 +51,26 @@ var App = (function(){
 	 */
 	clear: function(){
 	  this.tasksGroups = [];
+	},
+
+	/**
+	 * Get the position of a tasksGroup
+	 * In the tasksGroups array
+	 * 
+	 * @param  {TaskGroup} tasksGroup The taskGroup to get the positionof
+	 * @return {integer} The position of the tasksGroup
+	 */
+	getPositionOfTasksGroup: function(tasksGroup){
+	  return this.tasksGroups.indexOf(tasksGroup);
+	},
+
+	/**
+	 * Get a specific tasksGroup
+	 * @param  {integer} index The index of the tasksGroup
+	 * @return {TasksGroup}
+	 */
+	getTasksGroup: function(index){
+	  return this.tasksGroups[index];
 	},
 
 	/**

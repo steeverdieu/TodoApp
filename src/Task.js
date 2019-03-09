@@ -30,3 +30,12 @@ Task.prototype.markAsUncomplete = function(){
   this.completed = false;
   return this;
 }
+
+/**
+ * Get the label of the task
+ * 
+ * @return {strin}
+ */
+Task.prototype.getLabel = function(){
+  return this.label;
+}

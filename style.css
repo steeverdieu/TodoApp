@@ -98,7 +98,7 @@ body {
   justify-content: space-between;
 
   padding: 10px;
-}
+} 
 
 .tasks-item__mark-btn {
   width: 25px;
@@ -123,6 +123,16 @@ body {
   background-color: #e5e5f5;
 
   cursor: pointer;
+}
+
+.tasks-item.is-complete .tasks-item__mark-btn {
+  border-color: #ddfbbf;
+  background-color: #c7eaa5;
+}
+
+.tasks-item.is-complete .tasks-item__label {
+  color: #a7a7a7;
+  text-decoration: line-through;
 }
 
 .btn {

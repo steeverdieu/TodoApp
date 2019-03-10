@@ -109,12 +109,19 @@
    * @param {string} description The description of the tasksGroup
    */
   function createTaskElement(tasksGroupId, label, description){
-	var task = new Task(label, description);
-    app.getTasksGroup(tasksGroupId).addTask(task);
+    var task = new Task(label, description);
+    var tasksGroup = app.getTasksGroup(tasksGroupId);
+    tasksGroup.addTask(task);
+
+    var taskId = tasksGroup.getPositionOfTask(task);
 
     //Create the container of a task
     var taskItemElement = document.createElement('div');
     taskItemElement.setAttribute('class', 'tasks-item');
+    taskItemElement.setAttribute('data-tasks-group-id', tasksGroupId);
+    taskItemElement.setAttribute('data-task-id', taskId);
+    taskItemElement.setAttribute('id', 'task-item-' + tasksGroupId + taskId);
+
 
     //Create the button
     //To mark as completed
@@ -135,6 +142,14 @@
     taskItemElement.appendChild(taskOptions);
 
     document.querySelector('#tasks-group-' + tasksGroupId + ' .tasks').appendChild(taskItemElement);
+
+    //Add event to toggle the task as complete
+    markBtn.addEventListener('click', function(){
+      var parentNode = this.parentNode;
+      var tasksGroupId = parentNode.dataset.tasksGroupId;
+      var taskId = parentNode.dataset.taskId;
+      toggleTaskAsComplete(tasksGroupId, taskId);
+    })
   }
 
   /**
@@ -154,7 +169,7 @@
    * @param {integer} tasksGroupId The tasksGroup in which to add the task
    */
   var addTask = function(tasksGroupId){
-	return function(e){
+    return function(e){
       e.preventDefault();
 
       var datas = new FormData(formToAddTasks);
@@ -177,6 +192,42 @@
     modalForm.classList.remove('is-active');
     formToAddTasks.removeEventListener('submit', handleAddTaskFunction);
     handleAddTaskFunction = null;
+  }
+  
+  /**
+   * Mark a specific task as complete
+   * 
+   * @param  {integer} tasksGroupId The tasksGroupId
+   * @param  {integer} taskId The task id
+   * @return {void}
+   */
+  function toggleTaskAsComplete(tasksGroupId, taskId){
+  	var tasksGroup = app.getTasksGroup(tasksGroupId);
+  	if(tasksGroup){
+  	  var task = tasksGroup.getTask(taskId);
+  	  if(task){
+  	  	task.toggleComplete();
+  	  	toggleTaskElementAsComplete(tasksGroupId, taskId, task.isComplete());
+  	  }
+  	}
+  }
+  
+  /**
+   * Update the template of a task item when it's marked as complete or not
+   * 
+   * @param  {integer}  tasksGroupId
+   * @param  {integer}  taskId
+   * @param  {Boolean} isComplete
+   * @return {[void]}
+   */
+  function toggleTaskElementAsComplete(tasksGroupId, taskId, isComplete){
+    var taskItemElement = document.getElementById('task-item-' + tasksGroupId + taskId);
+
+    if(isComplete){
+      taskItemElement.classList.add('is-complete');
+    }else{
+      taskItemElement.classList.remove('is-complete');
+    }
   }
 
 })();

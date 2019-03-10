@@ -32,10 +32,29 @@ Task.prototype.markAsUncomplete = function(){
 }
 
 /**
+ * Mark as completed or uncompleted
+ * 
+ * @return {Task} The current task
+ */
+Task.prototype.toggleComplete = function(){
+  this.completed = !this.completed;
+  return this;
+}
+
+/**
  * Get the label of the task
  * 
  * @return {strin}
  */
 Task.prototype.getLabel = function(){
   return this.label;
+}
+
+/**
+ * Get if the current task is complete or not
+ * 
+ * @return {Boolean}
+ */
+Task.prototype.isComplete = function(){
+  return this.completed;
 }

@@ -77,6 +77,11 @@
     var tasksGroupElement = document.createElement('div');
     tasksGroupElement.setAttribute('class', 'tasks-group');
     tasksGroupElement.setAttribute('id', 'tasks-group-' + tasksGroupId);
+    
+    //Create the button to delete a task group
+    var tasksGroupDeleteBtn = document.createElement('div');
+    tasksGroupDeleteBtn.setAttribute('class', 'tasks-group__delete-btn');
+    tasksGroupDeleteBtn.setAttribute('data-tasks-group-id', tasksGroupId);
 
     //Create the container
     //That will contains the list of tasks
@@ -94,6 +99,11 @@
       showTaskForm(this.dataset.tasksGroupId);
     });
 
+    tasksGroupDeleteBtn.addEventListener('click', function(){
+      removeTasksGroup(this.dataset.tasksGroupId);
+    })
+
+    tasksGroupElement.appendChild(tasksGroupDeleteBtn);
     tasksGroupElement.appendChild(tasksContainer);
     tasksGroupElement.appendChild(addTaskBtn);
     appContainer.appendChild(tasksGroupElement);
@@ -134,21 +144,23 @@
     taskLabel.innerText = task.getLabel();
 
     //Create the option button
-    var taskOptions = document.createElement('div');
-    taskOptions.setAttribute('class', 'tasks-item__options');
+    var taskDeleteBtn = document.createElement('div');
+    taskDeleteBtn.setAttribute('class', 'tasks-item__options');
 
     taskItemElement.appendChild(markBtn);
     taskItemElement.appendChild(taskLabel);
-    taskItemElement.appendChild(taskOptions);
+    taskItemElement.appendChild(taskDeleteBtn);
 
     document.querySelector('#tasks-group-' + tasksGroupId + ' .tasks').appendChild(taskItemElement);
 
     //Add event to toggle the task as complete
     markBtn.addEventListener('click', function(){
-      var parentNode = this.parentNode;
-      var tasksGroupId = parentNode.dataset.tasksGroupId;
-      var taskId = parentNode.dataset.taskId;
-      toggleTaskAsComplete(tasksGroupId, taskId);
+      handleTaskAction(this, 'toggle-complete');
+    });
+
+    //Add event to delete a task
+    taskDeleteBtn.addEventListener('click', function(){
+      handleTaskAction(this, 'delete');
     })
   }
 
@@ -197,19 +209,45 @@
   /**
    * Mark a specific task as complete
    * 
-   * @param  {integer} tasksGroupId The tasksGroupId
-   * @param  {integer} taskId The task id
+   * @param  {HTMLElement} triggeredBtn The button that trigger the action
+   * @param  {String} action Determine the action ("delete", "toggle-complete")
    * @return {void}
    */
-  function toggleTaskAsComplete(tasksGroupId, taskId){
+  function handleTaskAction(triggeredBtn, action){
+
+    var parentNode = triggeredBtn.parentNode;
+    var tasksGroupId = parentNode.dataset.tasksGroupId;
+    var taskId = parentNode.dataset.taskId;
+
   	var tasksGroup = app.getTasksGroup(tasksGroupId);
   	if(tasksGroup){
   	  var task = tasksGroup.getTask(taskId);
   	  if(task){
-  	  	task.toggleComplete();
-  	  	toggleTaskElementAsComplete(tasksGroupId, taskId, task.isComplete());
+        if(action === 'toggle-complete'){
+          task.toggleComplete();
+          toggleTaskElementAsComplete(tasksGroupId, taskId, task.isComplete());
+        }
+
+        if(action === 'delete'){
+          tasksGroup.deleteTask(task);
+          removeTaskElement(tasksGroupId, taskId);
+        }
   	  }
   	}
+  }
+  
+  /**
+   * Remove a tasksGroup and its HTMLElement
+   * 
+   * @param  {[type]} tasksGroupId The id of the tasks group
+   * @return {void}
+   */
+  function removeTasksGroup(tasksGroupId){
+    var tasksGroup = app.getTasksGroup(tasksGroupId);
+    app.deleteTasksGroup(tasksGroup);
+    
+    var tasksGroupElement = document.getElementById('tasks-group-' + tasksGroupId);
+    tasksGroupElement.parentNode.removeChild(tasksGroupElement);   
   }
   
   /**
@@ -228,6 +266,18 @@
     }else{
       taskItemElement.classList.remove('is-complete');
     }
+  }
+
+  /**
+   * Remove the HTMLElement of a task item
+   * 
+   * @param  {[type]} tasksGroupId The id pf the taskGroup of the task
+   * @param  {[type]} taskId       The id of the task
+   * @return {void}
+   */
+  function removeTaskElement(tasksGroupId, taskId){
+    var taskItemElement = document.getElementById('task-item-' + tasksGroupId + taskId);
+    taskItemElement.parentNode.removeChild(taskItemElement);
   }
 
 })();

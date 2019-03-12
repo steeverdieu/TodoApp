@@ -77,8 +77,9 @@ body {
 }
 
 .tasks-group {
-  width: 100%;
+  position: relative;
 
+  width: 100%;
   padding: 25px;
   margin: 20px auto;
 
@@ -86,6 +87,21 @@ body {
   border-radius: 3px;
   box-shadow: 0px 15px 25px rgba(0, 0, 0, .2);
 
+}
+
+.tasks-group__delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 20px;
+  height: 10px;
+
+  border-radius: 293px;
+  
+  background-color: #ff9f9f;
+
+  cursor: pointer;
 }
 
 .tasks {
@@ -120,7 +136,8 @@ body {
   height: 15px;
 
   border-radius: 50%;
-  background-color: #e5e5f5;
+  background-color: #f8aaaa;
+  border: 2px solid #a26a6a;
 
   cursor: pointer;
 }

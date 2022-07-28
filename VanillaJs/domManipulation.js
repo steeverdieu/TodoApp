@@ -8,32 +8,11 @@
   var app = App.getInstance();
 
   /**
-   * The modal that contains the form to add task
-   * 
-   * @type {HTMLElement}
-   */
-  var modalForm = document.querySelector('.JS-tasks-modal');
-
-  /**
-   * The form to add new tasks
-   * 
-   * @type {HTMLELement}
-   */
-  var formToAddTasks = document.querySelector('.JS-add-task-form');
-
-  /**
-   * Button to close the tasks form
-   * 
-   * @type {HTMLElement}
-   */
-  var closeTaskFormBtn = document.querySelector('.JS-close-task-form');
-
-  /**
    * Global element where to inject the app
    * 
    * @type {HTMLElement}
    */
-  var appContainer = document.querySelector('.JS-app');
+  var appContainer = document.getElementById('JS-app');
 
   /**
    * Button used to create a new list of tasks
@@ -43,23 +22,11 @@
   var addTasksGroupBtn = document.querySelector('.JS-add-tasks-group');
 
   /**
-   * Keep a reference to the listener
-   * That handle the function that adds a new task to a tasksGroup
-   * 
-   * @type {function|null}
-   */
-  var handleAddTaskFunction = null;
-
-  /**
    * When click
    * Create a new tasksGroup element
    */
   addTasksGroupBtn.addEventListener('click', function () {
     createTasksGroupElement();
-  });
-
-  closeTaskFormBtn.addEventListener('click', function () {
-    hideTaskForm();
   });
 
   /**
@@ -75,8 +42,28 @@
 
     //Create the tasksGroup HTMLElement
     var tasksGroupElement = document.createElement('div');
-    tasksGroupElement.setAttribute('class', 'tasks-group');
+    tasksGroupElement.setAttribute('class', 'card px-3 mt-3 tasks-group');
     tasksGroupElement.setAttribute('id', 'tasks-group-' + tasksGroupId);
+
+    //Create card body
+    var tasksGroupElementBody = document.createElement('div');
+    tasksGroupElementBody.setAttribute('class', 'card-body');
+
+    // Create the title of the tasks group
+    var tasksGroupTitle = document.createElement('h4');
+    tasksGroupTitle.setAttribute('class', 'card-title');
+    tasksGroupTitle.setAttribute('id', 'card-title-' + tasksGroupId);
+
+    // Create the node texzt of the title
+    var tasksGroupTitleText = document.createTextNode("Todo List #" + parseInt(tasksGroupId + 1));
+
+    // Create the html form element
+    var htmlForm = document.createElement('input');
+    htmlForm.setAttribute('class', 'form-control form-control-lg');
+    htmlForm.setAttribute('id', 'form-' + tasksGroupId);
+    htmlForm.setAttribute('type', 'text');
+    htmlForm.setAttribute('placeholder', 'Add an item to this list');
+    htmlForm.setAttribute('aria-label', 'form-control-lg example');
 
     //Create the button to delete a task group
     var tasksGroupDeleteBtn = document.createElement('div');
@@ -85,27 +72,30 @@
 
     //Create the container
     //That will contains the list of tasks
-    var tasksContainer = document.createElement('div');
-    tasksContainer.setAttribute('class', 'tasks');
+    var tasksContainer = document.createElement('ul');
+    tasksContainer.setAttribute('class', 'pt-2 list-group tasks');
 
-    //Create the button used to add a new task
-    //In a tasksGroup HTMLElement
-    var addTaskBtn = document.createElement('button');
-    addTaskBtn.setAttribute('data-tasks-group-id', tasksGroupId);
-    addTaskBtn.setAttribute('class', 'btn');
-    addTaskBtn.innerText = 'Add task';
-
-    addTaskBtn.addEventListener('click', function () {
-      showTaskForm(this.dataset.tasksGroupId);
+    htmlForm.addEventListener('keyup', function (e) {
+      if (e.keyCode === 13) {
+        createTaskElement(tasksGroupId, e.target.value, 'description');
+        e.target.value = "";
+      }
     });
 
     tasksGroupDeleteBtn.addEventListener('click', function () {
       removeTasksGroup(this.dataset.tasksGroupId);
     })
 
-    tasksGroupElement.appendChild(tasksGroupDeleteBtn);
-    tasksGroupElement.appendChild(tasksContainer);
-    tasksGroupElement.appendChild(addTaskBtn);
+
+    tasksGroupElement.appendChild(tasksGroupElementBody);
+
+    tasksGroupTitle.appendChild(tasksGroupTitleText);
+    tasksGroupElementBody.appendChild(tasksGroupTitle);
+
+    tasksGroupElementBody.appendChild(htmlForm);
+    tasksGroupElementBody.appendChild(tasksGroupDeleteBtn);
+    tasksGroupElementBody.appendChild(tasksContainer);
+
     appContainer.appendChild(tasksGroupElement);
 
   }
@@ -126,30 +116,44 @@
     var taskId = tasksGroup.getPositionOfTask(task);
 
     //Create the container of a task
-    var taskItemElement = document.createElement('div');
-    taskItemElement.setAttribute('class', 'tasks-item');
+    var taskItemElement = document.createElement('li');
+    taskItemElement.setAttribute('class', 'tasks-item list-group-item d-flex justify-content-between');
     taskItemElement.setAttribute('data-tasks-group-id', tasksGroupId);
     taskItemElement.setAttribute('data-task-id', taskId);
     taskItemElement.setAttribute('id', 'task-item-' + tasksGroupId + taskId);
 
-
+    //Create form check
+    //To mark as completed
+    var formCheck = document.createElement('form');
+    formCheck.setAttribute('class', 'form-check');
+    
     //Create the button
     //To mark as completed
-    var markBtn = document.createElement('div');
-    markBtn.setAttribute('class', 'tasks-item__mark-btn');
+    var markBtn = document.createElement('input');
+    markBtn.setAttribute('class', 'tasks-item__mark-btn form-check-input me-1');
+    markBtn.setAttribute('type', 'checkbox');
+    markBtn.setAttribute('id', 'check-' + tasksGroupId + taskId);
 
     //Create the label of the task
-    var taskLabel = document.createElement('div');
-    taskLabel.setAttribute('class', 'tasks-item__label');
+    var taskLabel = document.createElement('label');
+    taskLabel.setAttribute('class', 'form-check-label tasks-item__label');
+    taskLabel.setAttribute('for', 'check-' + tasksGroupId + taskId);
+
     taskLabel.innerText = task.getLabel();
 
     //Create the option button
     var taskDeleteBtn = document.createElement('div');
     taskDeleteBtn.setAttribute('class', 'tasks-item__options');
 
-    taskItemElement.appendChild(markBtn);
-    taskItemElement.appendChild(taskLabel);
+    var taskDeleteBtnIcon = document.createElement('i');
+    taskDeleteBtnIcon.setAttribute('class', 'bi bi-trash');
+
+    taskItemElement.appendChild(formCheck);
+    formCheck.appendChild(markBtn);
+    formCheck.appendChild(taskLabel);
+    taskDeleteBtn.appendChild(taskDeleteBtnIcon);
     taskItemElement.appendChild(taskDeleteBtn);
+
 
     document.querySelector('#tasks-group-' + tasksGroupId + ' .tasks').appendChild(taskItemElement);
 
@@ -162,48 +166,6 @@
     taskDeleteBtn.addEventListener('click', function () {
       handleTaskAction(this, 'delete');
     })
-  }
-
-  /**
-   * show the form that provides way to add a tasks
-   * 
-   * @param  {integer} tasksGroupId The id of the tasksgroup in which to add the task
-   * @return {void}
-   */
-  function showTaskForm(tasksGroupId) {
-    modalForm.classList.add('is-active');
-    handleAddTaskFunction = addTask(tasksGroupId);
-    formToAddTasks.addEventListener('submit', handleAddTaskFunction);
-  }
-
-  /**
-   * Event listener when a user try to add a new task to a tasksGroup
-   * @param {integer} tasksGroupId The tasksGroup in which to add the task
-   */
-  var addTask = function (tasksGroupId) {
-    return function (e) {
-      e.preventDefault();
-
-      var datas = new FormData(formToAddTasks);
-      var label = datas.get('label');
-      var description = datas.get('description');
-
-      if (label) {
-        createTaskElement(tasksGroupId, label, description);
-        formToAddTasks.reset();
-      }
-    }
-  }
-
-  /**
-   * Hide the form that provides way to add tasks
-   * 
-   * @return {void}
-   */
-  function hideTaskForm() {
-    modalForm.classList.remove('is-active');
-    formToAddTasks.removeEventListener('submit', handleAddTaskFunction);
-    handleAddTaskFunction = null;
   }
 
   /**

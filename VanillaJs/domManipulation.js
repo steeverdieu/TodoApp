@@ -1,5 +1,5 @@
-(function(){
-  
+(function () {
+
   /**
    * Instance of the application
    * 
@@ -54,12 +54,12 @@
    * When click
    * Create a new tasksGroup element
    */
-  addTasksGroupBtn.addEventListener('click', function(){
+  addTasksGroupBtn.addEventListener('click', function () {
     createTasksGroupElement();
   });
 
-  closeTaskFormBtn.addEventListener('click', function(){
-  	hideTaskForm();
+  closeTaskFormBtn.addEventListener('click', function () {
+    hideTaskForm();
   });
 
   /**
@@ -67,8 +67,8 @@
    * 
    * @return {void}
    */
-  function createTasksGroupElement(){
-  	
+  function createTasksGroupElement() {
+
     //Create a new tasksGroup
     //And get his position in the tasksGroups array
     var tasksGroupId = app.getPositionOfTasksGroup(app.createTasksGroup());
@@ -77,7 +77,7 @@
     var tasksGroupElement = document.createElement('div');
     tasksGroupElement.setAttribute('class', 'tasks-group');
     tasksGroupElement.setAttribute('id', 'tasks-group-' + tasksGroupId);
-    
+
     //Create the button to delete a task group
     var tasksGroupDeleteBtn = document.createElement('div');
     tasksGroupDeleteBtn.setAttribute('class', 'tasks-group__delete-btn');
@@ -95,11 +95,11 @@
     addTaskBtn.setAttribute('class', 'btn');
     addTaskBtn.innerText = 'Add task';
 
-    addTaskBtn.addEventListener('click', function(){
+    addTaskBtn.addEventListener('click', function () {
       showTaskForm(this.dataset.tasksGroupId);
     });
 
-    tasksGroupDeleteBtn.addEventListener('click', function(){
+    tasksGroupDeleteBtn.addEventListener('click', function () {
       removeTasksGroup(this.dataset.tasksGroupId);
     })
 
@@ -118,7 +118,7 @@
    * @param {string} label The label of the tasksGroup
    * @param {string} description The description of the tasksGroup
    */
-  function createTaskElement(tasksGroupId, label, description){
+  function createTaskElement(tasksGroupId, label, description) {
     var task = new Task(label, description);
     var tasksGroup = app.getTasksGroup(tasksGroupId);
     tasksGroup.addTask(task);
@@ -154,12 +154,12 @@
     document.querySelector('#tasks-group-' + tasksGroupId + ' .tasks').appendChild(taskItemElement);
 
     //Add event to toggle the task as complete
-    markBtn.addEventListener('click', function(){
+    markBtn.addEventListener('click', function () {
       handleTaskAction(this, 'toggle-complete');
     });
 
     //Add event to delete a task
-    taskDeleteBtn.addEventListener('click', function(){
+    taskDeleteBtn.addEventListener('click', function () {
       handleTaskAction(this, 'delete');
     })
   }
@@ -170,7 +170,7 @@
    * @param  {integer} tasksGroupId The id of the tasksgroup in which to add the task
    * @return {void}
    */
-  function showTaskForm(tasksGroupId){
+  function showTaskForm(tasksGroupId) {
     modalForm.classList.add('is-active');
     handleAddTaskFunction = addTask(tasksGroupId);
     formToAddTasks.addEventListener('submit', handleAddTaskFunction);
@@ -180,19 +180,19 @@
    * Event listener when a user try to add a new task to a tasksGroup
    * @param {integer} tasksGroupId The tasksGroup in which to add the task
    */
-  var addTask = function(tasksGroupId){
-    return function(e){
+  var addTask = function (tasksGroupId) {
+    return function (e) {
       e.preventDefault();
 
       var datas = new FormData(formToAddTasks);
       var label = datas.get('label');
       var description = datas.get('description');
 
-	  if(label){
-	    createTaskElement(tasksGroupId, label, description);
-	    formToAddTasks.reset();
-	  }
-	}
+      if (label) {
+        createTaskElement(tasksGroupId, label, description);
+        formToAddTasks.reset();
+      }
+    }
   }
 
   /**
@@ -200,12 +200,12 @@
    * 
    * @return {void}
    */
-  function hideTaskForm(){
+  function hideTaskForm() {
     modalForm.classList.remove('is-active');
     formToAddTasks.removeEventListener('submit', handleAddTaskFunction);
     handleAddTaskFunction = null;
   }
-  
+
   /**
    * Mark a specific task as complete
    * 
@@ -213,43 +213,43 @@
    * @param  {String} action Determine the action ("delete", "toggle-complete")
    * @return {void}
    */
-  function handleTaskAction(triggeredBtn, action){
+  function handleTaskAction(triggeredBtn, action) {
 
     var parentNode = triggeredBtn.parentNode;
     var tasksGroupId = parentNode.dataset.tasksGroupId;
     var taskId = parentNode.dataset.taskId;
 
-  	var tasksGroup = app.getTasksGroup(tasksGroupId);
-  	if(tasksGroup){
-  	  var task = tasksGroup.getTask(taskId);
-  	  if(task){
-        if(action === 'toggle-complete'){
+    var tasksGroup = app.getTasksGroup(tasksGroupId);
+    if (tasksGroup) {
+      var task = tasksGroup.getTask(taskId);
+      if (task) {
+        if (action === 'toggle-complete') {
           task.toggleComplete();
           toggleTaskElementAsComplete(tasksGroupId, taskId, task.isComplete());
         }
 
-        if(action === 'delete'){
+        if (action === 'delete') {
           tasksGroup.deleteTask(task);
           removeTaskElement(tasksGroupId, taskId);
         }
-  	  }
-  	}
+      }
+    }
   }
-  
+
   /**
    * Remove a tasksGroup and its HTMLElement
    * 
    * @param  {[type]} tasksGroupId The id of the tasks group
    * @return {void}
    */
-  function removeTasksGroup(tasksGroupId){
+  function removeTasksGroup(tasksGroupId) {
     var tasksGroup = app.getTasksGroup(tasksGroupId);
     app.deleteTasksGroup(tasksGroup);
-    
+
     var tasksGroupElement = document.getElementById('tasks-group-' + tasksGroupId);
-    tasksGroupElement.parentNode.removeChild(tasksGroupElement);   
+    tasksGroupElement.parentNode.removeChild(tasksGroupElement);
   }
-  
+
   /**
    * Update the template of a task item when it's marked as complete or not
    * 
@@ -258,12 +258,12 @@
    * @param  {Boolean} isComplete
    * @return {[void]}
    */
-  function toggleTaskElementAsComplete(tasksGroupId, taskId, isComplete){
+  function toggleTaskElementAsComplete(tasksGroupId, taskId, isComplete) {
     var taskItemElement = document.getElementById('task-item-' + tasksGroupId + taskId);
 
-    if(isComplete){
+    if (isComplete) {
       taskItemElement.classList.add('is-complete');
-    }else{
+    } else {
       taskItemElement.classList.remove('is-complete');
     }
   }
@@ -275,7 +275,7 @@
    * @param  {[type]} taskId       The id of the task
    * @return {void}
    */
-  function removeTaskElement(tasksGroupId, taskId){
+  function removeTaskElement(tasksGroupId, taskId) {
     var taskItemElement = document.getElementById('task-item-' + tasksGroupId + taskId);
     taskItemElement.parentNode.removeChild(taskItemElement);
   }

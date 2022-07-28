@@ -5,7 +5,7 @@
  * @param  {[type]} description The description of the ask
  * @return {void}
  */
-var Task = function(label, description) {
+var Task = function (label, description) {
   this.label = label;
   this.description = description;
   this.completed = false;
@@ -16,7 +16,7 @@ var Task = function(label, description) {
  * 
  * @return {Task} The current task
  */
-Task.prototype.markAsComplete = function(){
+Task.prototype.markAsComplete = function () {
   this.completed = true;
   return this;
 }
@@ -26,7 +26,7 @@ Task.prototype.markAsComplete = function(){
  * 
  * @return {Task} The current task
  */
-Task.prototype.markAsUncomplete = function(){
+Task.prototype.markAsUncomplete = function () {
   this.completed = false;
   return this;
 }
@@ -36,7 +36,7 @@ Task.prototype.markAsUncomplete = function(){
  * 
  * @return {Task} The current task
  */
-Task.prototype.toggleComplete = function(){
+Task.prototype.toggleComplete = function () {
   this.completed = !this.completed;
   return this;
 }
@@ -46,7 +46,7 @@ Task.prototype.toggleComplete = function(){
  * 
  * @return {strin}
  */
-Task.prototype.getLabel = function(){
+Task.prototype.getLabel = function () {
   return this.label;
 }
 
@@ -55,6 +55,6 @@ Task.prototype.getLabel = function(){
  * 
  * @return {Boolean}
  */
-Task.prototype.isComplete = function(){
+Task.prototype.isComplete = function () {
   return this.completed;
 }

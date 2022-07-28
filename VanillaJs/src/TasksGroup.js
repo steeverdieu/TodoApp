@@ -1,4 +1,4 @@
-var TasksGroup = function() {
+var TasksGroup = function () {
   this.tasks = [];
 }
 
@@ -7,7 +7,7 @@ var TasksGroup = function() {
  * 
  * @param {Task} task The task to add
  */
-TasksGroup.prototype.addTask = function(task){
+TasksGroup.prototype.addTask = function (task) {
   this.tasks.push(task);
 }
 
@@ -18,7 +18,7 @@ TasksGroup.prototype.addTask = function(task){
  * @param  {Task} task The task to get the position of
  * @return {integer} The position of the task
  */
-TasksGroup.prototype.getPositionOfTask = function(task){
+TasksGroup.prototype.getPositionOfTask = function (task) {
   return this.tasks.indexOf(task);
 }
 
@@ -28,7 +28,7 @@ TasksGroup.prototype.getPositionOfTask = function(task){
  * @param  {Task} task The task to delete
  * @return {void} 
  */
-TasksGroup.prototype.deleteTask = function(task){
+TasksGroup.prototype.deleteTask = function (task) {
   this.tasks.splice(this.getPositionOfTask(task), 1);
 }
 
@@ -38,7 +38,7 @@ TasksGroup.prototype.deleteTask = function(task){
  * @param  {Task} task The task to mark
  * @return {void}
  */
-TasksGroup.prototype.markAsComplete = function(task){
+TasksGroup.prototype.markAsComplete = function (task) {
   this.task.completed();
 }
 
@@ -48,7 +48,7 @@ TasksGroup.prototype.markAsComplete = function(task){
  * @param  {integer} index The position of the task
  * @return {Task}
  */
-TasksGroup.prototype.getTask = function(index){
+TasksGroup.prototype.getTask = function (index) {
   return this.tasks[index]
 }
 
@@ -57,8 +57,8 @@ TasksGroup.prototype.getTask = function(index){
  * 
  * @return {array} The list of tasks
  */
-TasksGroup.prototype.getTasks = function(){
-	return this.tasks;
+TasksGroup.prototype.getTasks = function () {
+  return this.tasks;
 }
 
 

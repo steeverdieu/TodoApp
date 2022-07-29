@@ -22,7 +22,7 @@
   var addTasksGroupBtn = document.querySelector('.JS-add-tasks-group');
 
   /**
-   * When click
+   * When click on "add tasks group" button
    * Create a new tasksGroup element
    */
   addTasksGroupBtn.addEventListener('click', function () {
@@ -30,7 +30,7 @@
   });
 
   /**
-   * Create a new HtmlElement that contains a list of task
+   * Create a new HtmlElement that will contain a list of task
    * 
    * @return {void}
    */
@@ -45,37 +45,43 @@
     tasksGroupElement.setAttribute('class', 'card px-3 mt-3 tasks-group');
     tasksGroupElement.setAttribute('id', 'tasks-group-' + tasksGroupId);
 
-    //Create card body
-    var tasksGroupElementBody = document.createElement('div');
-    tasksGroupElementBody.setAttribute('class', 'card-body');
+    //Create the header of the card
+    var tasksGroupElementHeader = document.createElement('div');
+    tasksGroupElementHeader.setAttribute('class', 'card-header mt-3 d-flex justify-content-between');
 
     // Create the title of the tasks group
     var tasksGroupTitle = document.createElement('h4');
     tasksGroupTitle.setAttribute('class', 'card-title');
     tasksGroupTitle.setAttribute('id', 'card-title-' + tasksGroupId);
-
-    // Create the node texzt of the title
     var tasksGroupTitleText = document.createTextNode("Todo List #" + parseInt(tasksGroupId + 1));
-
-    // Create the html form element
-    var htmlForm = document.createElement('input');
-    htmlForm.setAttribute('class', 'form-control form-control-lg');
-    htmlForm.setAttribute('id', 'form-' + tasksGroupId);
-    htmlForm.setAttribute('type', 'text');
-    htmlForm.setAttribute('placeholder', 'Add an item to this list');
-    htmlForm.setAttribute('aria-label', 'form-control-lg example');
 
     //Create the button to delete a task group
     var tasksGroupDeleteBtn = document.createElement('div');
     tasksGroupDeleteBtn.setAttribute('class', 'tasks-group__delete-btn');
     tasksGroupDeleteBtn.setAttribute('data-tasks-group-id', tasksGroupId);
 
+    var tasksGroupDeleteBtnIcon = document.createElement('i');
+    tasksGroupDeleteBtnIcon.setAttribute('class', 'bi bi-x');
+
+    //Create card body
+    var tasksGroupElementBody = document.createElement('div');
+    tasksGroupElementBody.setAttribute('class', 'card-body');
+
+    // Create the html form element
+    // That will let you add new tasks
+    var addTaskForm = document.createElement('input');
+    addTaskForm.setAttribute('class', 'form-control form-control-lg');
+    addTaskForm.setAttribute('id', 'form-' + tasksGroupId);
+    addTaskForm.setAttribute('type', 'text');
+    addTaskForm.setAttribute('placeholder', 'Add an item to this list');
+    addTaskForm.setAttribute('aria-label', 'form-control-lg');
+
     //Create the container
     //That will contains the list of tasks
     var tasksContainer = document.createElement('ul');
     tasksContainer.setAttribute('class', 'pt-2 list-group tasks');
 
-    htmlForm.addEventListener('keyup', function (e) {
+    addTaskForm.addEventListener('keyup', function (e) {
       if (e.keyCode === 13) {
         createTaskElement(tasksGroupId, e.target.value, 'description');
         e.target.value = "";
@@ -84,17 +90,19 @@
 
     tasksGroupDeleteBtn.addEventListener('click', function () {
       removeTasksGroup(this.dataset.tasksGroupId);
-    })
+    });
 
-
-    tasksGroupElement.appendChild(tasksGroupElementBody);
-
+    //Push every element into the DOM
+    tasksGroupElementHeader.appendChild(tasksGroupTitle);
+    tasksGroupElementHeader.appendChild(tasksGroupDeleteBtn);
+    tasksGroupDeleteBtn.appendChild(tasksGroupDeleteBtnIcon)
     tasksGroupTitle.appendChild(tasksGroupTitleText);
-    tasksGroupElementBody.appendChild(tasksGroupTitle);
 
-    tasksGroupElementBody.appendChild(htmlForm);
-    tasksGroupElementBody.appendChild(tasksGroupDeleteBtn);
+    tasksGroupElementBody.appendChild(addTaskForm);
     tasksGroupElementBody.appendChild(tasksContainer);
+
+    tasksGroupElement.appendChild(tasksGroupElementHeader);
+    tasksGroupElement.appendChild(tasksGroupElementBody);
 
     appContainer.appendChild(tasksGroupElement);
 
@@ -133,27 +141,34 @@
     markBtn.setAttribute('class', 'tasks-item__mark-btn form-check-input me-1');
     markBtn.setAttribute('type', 'checkbox');
     markBtn.setAttribute('id', 'check-' + tasksGroupId + taskId);
+    markBtn.setAttribute('data-tasks-group-id', tasksGroupId);
+    markBtn.setAttribute('data-task-id', taskId);
+    
 
     //Create the label of the task
     var taskLabel = document.createElement('label');
     taskLabel.setAttribute('class', 'form-check-label tasks-item__label');
     taskLabel.setAttribute('for', 'check-' + tasksGroupId + taskId);
 
-    taskLabel.innerText = task.getLabel();
+    taskLabel.innerText = label;
 
     //Create the option button
     var taskDeleteBtn = document.createElement('div');
     taskDeleteBtn.setAttribute('class', 'tasks-item__options');
+    taskDeleteBtn.setAttribute('data-tasks-group-id', tasksGroupId);
+    taskDeleteBtn.setAttribute('data-task-id', taskId);
 
     var taskDeleteBtnIcon = document.createElement('i');
     taskDeleteBtnIcon.setAttribute('class', 'bi bi-trash');
 
-    taskItemElement.appendChild(formCheck);
+    // Push every element to the DOM
     formCheck.appendChild(markBtn);
     formCheck.appendChild(taskLabel);
+    
     taskDeleteBtn.appendChild(taskDeleteBtnIcon);
+    
+    taskItemElement.appendChild(formCheck);
     taskItemElement.appendChild(taskDeleteBtn);
-
 
     document.querySelector('#tasks-group-' + tasksGroupId + ' .tasks').appendChild(taskItemElement);
 
@@ -177,9 +192,8 @@
    */
   function handleTaskAction(triggeredBtn, action) {
 
-    var parentNode = triggeredBtn.parentNode;
-    var tasksGroupId = parentNode.dataset.tasksGroupId;
-    var taskId = parentNode.dataset.taskId;
+    var tasksGroupId = triggeredBtn.dataset.tasksGroupId;
+    var taskId = triggeredBtn.dataset.taskId;
 
     var tasksGroup = app.getTasksGroup(tasksGroupId);
     if (tasksGroup) {
@@ -195,6 +209,7 @@
           removeTaskElement(tasksGroupId, taskId);
         }
       }
+      console.log(task);
     }
   }
 
@@ -224,9 +239,9 @@
     var taskItemElement = document.getElementById('task-item-' + tasksGroupId + taskId);
 
     if (isComplete) {
-      taskItemElement.classList.add('is-complete');
+      taskItemElement.classList.add('is-complete', 'text-muted');
     } else {
-      taskItemElement.classList.remove('is-complete');
+      taskItemElement.classList.remove('is-complete', 'text-muted');
     }
   }
 

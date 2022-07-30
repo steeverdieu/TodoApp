@@ -11,6 +11,9 @@ var App = (function () {
      */
     tasksGroups: [],
 
+    totalTaskgroups: 0,
+
+
     /**
      * Create a single instance of the object
      * 
@@ -30,6 +33,7 @@ var App = (function () {
      */
     createTasksGroup: function () {
       var tasksGroup = new TasksGroup();
+      this.totalTaskgroups += 1;
       this.tasksGroups.push(tasksGroup);
       return tasksGroup;
     },
@@ -69,8 +73,10 @@ var App = (function () {
      * @param  {integer} index The index of the tasksGroup
      * @return {TasksGroup}
      */
-    getTasksGroup: function (index) {
-      return this.tasksGroups[index];
+    getTasksGroup: function (tasksGroupId) {
+      return this.tasksGroups.filter(function(tasksGroup){
+        return tasksGroup.id == tasksGroupId
+      })[0];
     },
 
     /**

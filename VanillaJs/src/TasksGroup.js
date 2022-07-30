@@ -1,5 +1,16 @@
 var TasksGroup = function () {
   this.tasks = [];
+  this.id = Math.random().toString(16).slice(2) + this.tasks.length;
+}
+
+
+/**
+ * Get the id of the current TasksGroup
+ * 
+ * @param {Task} task The task to add
+ */
+ TasksGroup.prototype.getId = function () {
+  return this.id;
 }
 
 /**
@@ -30,16 +41,6 @@ TasksGroup.prototype.getPositionOfTask = function (task) {
  */
 TasksGroup.prototype.deleteTask = function (task) {
   this.tasks.splice(this.getPositionOfTask(task), 1);
-}
-
-/**
- * Mark a task as complete
- * 
- * @param  {Task} task The task to mark
- * @return {void}
- */
-TasksGroup.prototype.markAsComplete = function (task) {
-  this.task.completed();
 }
 
 /**

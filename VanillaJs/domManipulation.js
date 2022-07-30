@@ -37,8 +37,9 @@
   function createTasksGroupElement() {
 
     //Create a new tasksGroup
+    var tasksGroup = app.createTasksGroup();
     //And get his position in the tasksGroups array
-    var tasksGroupId = app.getPositionOfTasksGroup(app.createTasksGroup());
+    var tasksGroupId = tasksGroup.getId();
 
     //Create the tasksGroup HTMLElement
     var tasksGroupElement = document.createElement('div');
@@ -53,7 +54,7 @@
     var tasksGroupTitle = document.createElement('h4');
     tasksGroupTitle.setAttribute('class', 'card-title');
     tasksGroupTitle.setAttribute('id', 'card-title-' + tasksGroupId);
-    var tasksGroupTitleText = document.createTextNode("Todo List #" + parseInt(tasksGroupId + 1));
+    var tasksGroupTitleText = document.createTextNode("Todo List #" + app.totalTaskgroups);
 
     //Create the button to delete a task group
     var tasksGroupDeleteBtn = document.createElement('div');
@@ -209,7 +210,6 @@
           removeTaskElement(tasksGroupId, taskId);
         }
       }
-      console.log(task);
     }
   }
 

@@ -44,7 +44,7 @@ Task.prototype.toggleComplete = function () {
 /**
  * Get the label of the task
  * 
- * @return {strin}
+ * @return {string}
  */
 Task.prototype.getLabel = function () {
   return this.label;

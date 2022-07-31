@@ -11,7 +11,14 @@ var App = (function () {
      */
     tasksGroups: [],
 
-    totalTaskgroups: 0,
+    /**
+     * The number of tasksGroups
+     * That has been created
+     * Since the app has been running
+     * 
+     * @type {Number}
+     */
+    totalTasksGroups: 0,
 
 
     /**
@@ -32,8 +39,8 @@ var App = (function () {
      * @return {TasksGroup} The tasks group just created
      */
     createTasksGroup: function () {
+      this.totalTasksGroups += 1;
       var tasksGroup = new TasksGroup();
-      this.totalTaskgroups += 1;
       this.tasksGroups.push(tasksGroup);
       return tasksGroup;
     },
@@ -70,6 +77,7 @@ var App = (function () {
 
     /**
      * Get a specific tasksGroup
+     * 
      * @param  {integer} index The index of the tasksGroup
      * @return {TasksGroup}
      */

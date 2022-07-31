@@ -50,7 +50,7 @@ TasksGroup.prototype.deleteTask = function (task) {
  * @return {Task}
  */
 TasksGroup.prototype.getTask = function (index) {
-  return this.tasks[index]
+  return this.tasks[index];
 }
 
 /**
@@ -61,5 +61,3 @@ TasksGroup.prototype.getTask = function (index) {
 TasksGroup.prototype.getTasks = function () {
   return this.tasks;
 }
-
-

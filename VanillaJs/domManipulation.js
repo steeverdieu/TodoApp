@@ -54,7 +54,7 @@
     var tasksGroupTitle = document.createElement('h4');
     tasksGroupTitle.setAttribute('class', 'card-title');
     tasksGroupTitle.setAttribute('id', 'card-title-' + tasksGroupId);
-    var tasksGroupTitleText = document.createTextNode("Todo List #" + app.totalTaskgroups);
+    var tasksGroupTitleText = document.createTextNode("Todo List #" + app.totalTasksGroups);
 
     //Create the button to delete a task group
     var tasksGroupDeleteBtn = document.createElement('div');

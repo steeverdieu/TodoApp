@@ -1,0 +1,26 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "domManipulation.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flaatpixels/TodoApp.git"
+  },
+  "author": "Steeve VERDIEU",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flaatpixels/TodoApp/issues"
+  },
+  "homepage": "https://github.com/flaatpixels/TodoApp#readme",
+  "devDependencies": {
+    "jasmine": "^4.3.0",
+    "typescript": "^4.7.4"
+  }
+}

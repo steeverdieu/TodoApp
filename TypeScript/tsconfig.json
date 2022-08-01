@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "noEmitOnError": true,
+    "strict": true,
+    "target": "es6"
+  },
+
+  "include": ["src/**/*", "domManipulation.ts"]
+}
